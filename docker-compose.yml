@@ -1,0 +1,48 @@
+services:
+  db:
+    image: mariadb:11.4
+    container_name: motofix_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: motofix_db
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    volumes:
+      - db_data:/var/lib/mysql
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: motofix_app
+    restart: always
+    working_dir: /var/www/html
+    volumes:
+      - ./:/var/www/html
+
+  web:
+    image: nginx:alpine
+    container_name : motofix_web
+    restart: always
+    ports:
+      - "8080:80"
+    volumes:
+      - ./:/var/www/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - app
+
+  pma:
+    image: phpmyadmin/phpmyadmin
+    container_name: motofix_pma
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "8888:80"
+    depends_on:
+      - db
+
+volumes:
+  db_data:

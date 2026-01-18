@@ -1,0 +1,24 @@
+# Dependency
+/vendor/
+composer.lock
+
+# Environment Variables
+.env
+.env.*.local
+.env.local
+
+# Docker Database Data
+.mysql_data/
+
+# Log and Temporary Data
+/logs/
+/tmp/
+*.log
+*.sql
+*.sqlite
+
+# System Data
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
