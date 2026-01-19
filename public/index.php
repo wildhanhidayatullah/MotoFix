@@ -4,16 +4,36 @@ session_start();
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+use App\Config\Database;
+use App\Core\Router;
+use App\Controllers\AuthController;
+use App\Controllers\DashboardController;
+use App\Controllers\InventoryController;
+use App\Controllers\CustomerController;
+
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
-Use App\Config\Database;
-use App\Controllers\DashboardController;
-use App\Core\Router;
-
 $router = new Router();
 
+// ---| ROUTE LIST |---
+// Auth
+$router->get('/login', [AuthController::class, 'index']);
+$router->get('/logout', [AuthController::class, 'logout']);
+$router->post('/login-process', [AuthController::class, 'login']);
+
+// Dashboard
 $router->get('/', [DashboardController::class, 'index']);
 $router->get('/about', [DashboardController::class, 'about']);
+
+// Invetory
+$router->get('/inventory', [InventoryController::class, 'index']);
+$router->get('/inventory/create', [InventoryController::class, 'create']);
+$router->post('/inventory/store', [InventoryController::class, 'store']);
+
+// Customers
+$router->get('/customers', [CustomerController::class, 'index']);
+$router->get('/customers/create', [CustomerController::class, 'create']);
+$router->post('/customers/store', [CustomerController::class, 'store']);
 
 $router->resolve();
