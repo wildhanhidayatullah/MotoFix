@@ -16,8 +16,9 @@ class User {
     public function findByUsername($username) {
         $stmt = $this->connection->prepare("SELECT * FROM $this->table WHERE username = :username LIMIT 1");
         
-        $stmt->bindParam(':username', $username);
-        $stmt->execute();
+        $stmt->execute([
+            ':username' => $username
+        ]);
 
         return $stmt->fetch();
     }

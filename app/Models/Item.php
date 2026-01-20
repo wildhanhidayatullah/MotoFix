@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Config\Database;
+use PDOException;
 
 class Item {
     private $connection;
@@ -21,22 +22,25 @@ class Item {
     }
 
     public function create($data) {
-        $stmt = $this->connection->prepare(
-            "INSERT INTO $this->table (code, name, stock, buy_price, sell_price, min_stock_alert)
-             VALUES (:code, :name, :stock, :buy_price, :sell_price, :min_stock_alert)"
-        );
+        try {
+            $stmt = $this->connection->prepare(
+                "INSERT INTO $this->table (code, name, stock, buy_price, sell_price, min_stock_alert)
+                VALUES (:code, :name, :stock, :buy_price, :sell_price, :min_stock_alert)"
+            );
 
-        $stmt->bindParam(':code', $data['code']);
-        $stmt->bindParam(':name', $data['name']);
-        $stmt->bindParam(':stock', $data['stock']);
-        $stmt->bindParam(':buy_price', $data['buy_price']);
-        $stmt->bindParam(':sell_price', $data['sell_price']);
-        $stmt->bindParam(':min_stock_alert', $data['min_stock_alert']);
+            $stmt->execute([
+                ':code' => $data['code'],
+                ':name' => $data['name'],
+                ':stock' => $data['stock'],
+                ':buy_price' => $data['buy_price'],
+                ':sell_price' => $data['sell_price'],
+                ':min_stock_alert' => $data['min_stock_alert']
+            ]);
 
-        if ($stmt->execute()) {
             return true;
+        } catch (PDOException $error) {
+            echo "Failed to commit changes ($this->table): " . $error->getMessage();            
+            return false;
         }
-        
-        return false;
     }
 }

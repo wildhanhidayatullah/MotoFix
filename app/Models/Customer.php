@@ -7,6 +7,8 @@ use PDOException;
 
 class Customer {
     private $connection;
+    private $tableC = 'customers';
+    private $tableV = 'vehicles';
 
     public function __construct() {
         $database = new Database();
@@ -15,10 +17,10 @@ class Customer {
 
     public function getAll() {
         $stmt = $this->connection->prepare(
-            "SELECT customers.*, GROUP_CONCAT(CONCAT(vehicles.brand, ' ', vehicles.model) SEPARATOR ', ') as vehicles_list
-             FROM customers LEFT JOIN vehicles ON customers.id = vehicles.customer_id
-             GROUP BY customers.id
-             ORDER BY customers.created_at DESC"
+            "SELECT $this->tableC.*, GROUP_CONCAT(CONCAT($this->tableV.brand, ' ', $this->tableV.model) SEPARATOR ', ') as vehicles_list
+             FROM $this->tableC LEFT JOIN $this->tableV ON $this->tableC.id = $this->tableV.customer_id
+             GROUP BY $this->tableC.id
+             ORDER BY $this->tableC.created_at DESC"
         );
 
         $stmt->execute();
@@ -30,30 +32,32 @@ class Customer {
         $this->connection->beginTransaction();
 
         try {
-            $stmtCustomer = $this->connection->prepare("INSERT INTO customers (name, phone) VALUES (:name, :phone)");
+            $stmtCustomer = $this->connection->prepare("INSERT INTO $this->tableC (name, phone) VALUES (:name, :phone)");
             
-            $stmtCustomer->bindParam(':name', $data['name']);
-            $stmtCustomer->bindParam(':phone', $data['phone']);
-            $stmtCustomer->execute();
+            $stmtCustomer->execute([
+                ':name' => $data['name'],
+                ':phone' => $data['phone']
+            ]);
 
             $customerId = $this->connection->lastInsertId();
 
             $stmtVehicle = $this->connection->prepare(
-                "INSERT INTO vehicles (customer_id, brand, model, color, production_year)
-                 VALUES (:customer_id, :brand, :model, :color, :year)"
+                "INSERT INTO $this->tableV (customer_id, brand, model, color, production_year)
+                 VALUES (:cid, :brand, :model, :color, :year)"
             );
 
-            $stmtVehicle->bindParam(':customer_id', $customerId);
-            $stmtVehicle->bindParam(':brand', $data['brand']);
-            $stmtVehicle->bindParam(':model', $data['model']);
-            $stmtVehicle->bindParam(':color', $data['color']);
-            $stmtVehicle->bindParam(':year', $data['year']);
-            $stmtVehicle->execute();
+            $stmtVehicle->execute([
+                ':cid' => $customerId,
+                ':brand' => $data['brand'],
+                ':model' => $data['model'],
+                ':color' => $data['color'],
+                ':year' => $data['year']
+            ]);
 
             $this->connection->commit();
             return true;
         } catch (PDOException $error) {
-            echo "Failed to commit changes (customers, vehicles): " . $error->getMessage();
+            echo "Failed to commit changes ($this->tableC, $this->tableV): " . $error->getMessage();
 
             $this->connection->rollback();
             return false;
