@@ -10,6 +10,7 @@ use App\Controllers\AuthController;
 use App\Controllers\DashboardController;
 use App\Controllers\InventoryController;
 use App\Controllers\CustomerController;
+use App\Controllers\TransactionController;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
@@ -35,5 +36,11 @@ $router->post('/inventory/store', [InventoryController::class, 'store']);
 $router->get('/customers', [CustomerController::class, 'index']);
 $router->get('/customers/create', [CustomerController::class, 'create']);
 $router->post('/customers/store', [CustomerController::class, 'store']);
+
+// Transactions
+$router->get('/transactions', [TransactionController::class, 'index']);
+$router->get('/transactions/create', [TransactionController::class, 'create']);
+$router->get('/api/vehicles', [TransactionController::class, 'getVehicles']);
+$router->post('/transactions/store', [TransactionController::class, 'store']);
 
 $router->resolve();
