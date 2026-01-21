@@ -6,34 +6,71 @@ class Router {
     protected $routes = [];
 
     public function get($path, $callback) {
+        $path = $this->trimPath($path);
         $this->routes['GET'][$path] = $callback;
     }
 
     public function post($path, $callback) {
+        $path = $this->trimPath($path);
         $this->routes['POST'][$path] = $callback;
     }
 
     public function resolve() {
-        $path = $_SERVER['REQUEST_URI'] ?? '/';
-        $position = strpos($path, '?');
+        $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $path = $this->trimPath($path);
 
-        if ($position !== false) {
-            $path = substr($path, 0, $position);
-        }
+        $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
-        $callback = $this->routes[$_SERVER['REQUEST_METHOD']][$path] ?? false;
-
-        if ($callback === false) {
-            http_response_code(404);
-            echo "404 - Page Not Found";
-            
+        if (!isset($this->routes[$method])) {
+            $this->sendNotFound();
             return;
         }
-        
-        if (is_array($callback)) {
-            $callback[0] = new $callback[0]();
+
+        $callback = $this->routes[$method][$path] ?? false;
+
+        if ($callback === false) {
+            $this->sendNotFound();
+            return;
         }
 
-        call_user_func($callback);
+        if (is_array($callback)) {
+            $controller = new $callback[0]();
+            $method = $callback[1];
+
+            call_user_func([$controller, $method]);
+        } else {
+            call_user_func($callback);
+        }
+    }
+
+    private function trimPath($path) {
+        if ($path !== '/') {
+            return rtrim($path, '/');
+        }
+
+        return $path;
+    }
+
+    private function sendNotFound() {
+        http_response_code(404);
+
+        if (strpos($_SERVER['REQUEST_URI'], '/api/') !== false) {
+            header('Content-Type: application/json');
+
+            echo json_encode([
+                'status' => 'error',
+                'message' => '404 - Route Not Found',
+                'path' => $_SERVER['REQUEST_URI']
+            ]);
+        } else {
+            $url = htmlspecialchars($_SERVER['REQUEST_URI']);
+
+            echo "<div style='text-align:center; padding:50px; font-family:sans-serif;'>
+                    <h1>404 - Halaman Tidak Ditemukan</h1>
+                    <p>Maaf, path <code>$url</code> tidak ada di sistem.</p>
+                    <a href='/'>Kembali ke Dashboard</a>
+                  </div>";
+        }
+        exit;
     }
 }
