@@ -8,7 +8,7 @@ function csrfToken() {
     echo "<input type='hidden' name='csrf_token' value='{$_SESSION['csrf_token']}'>";
 }
 
-function checkCsrf() {
+function csrfCheck() {
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         die('CSRF Token Mismatch: Akses ditolak.');
     }
