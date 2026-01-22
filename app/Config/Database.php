@@ -17,7 +17,7 @@ class Database {
             $username = $_ENV['DB_USER'];
             $password = $_ENV['DB_PASS'];
 
-            define("DSN", sprintf("mysql:host=%s;dbname=%s", $db_host, $db_name));
+            $dsn = sprintf("mysql:host=%s;dbname=%s", $db_host, $db_name);
 
             $options = [
                 PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
@@ -25,7 +25,7 @@ class Database {
                 PDO::ATTR_PERSISTENT => true
             ];
 
-            $this->connection = new PDO(DSN, $username, $password, $options);
+            $this->connection = new PDO($dsn, $username, $password, $options);
         } catch (PDOException $error) {
             echo "Connection Error: " . $error->getMessage();
         }
