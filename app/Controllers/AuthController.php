@@ -3,13 +3,15 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
-use App\Models\User;
 
 class AuthController extends Controller {
+    public function __construct() {
+        // Do nothing, override to prevent redirect
+    }
+
     public function index() {
         if (isset($_SESSION['user_id'])) {
-            header('Location: /');
-            exit;
+            redirect('/');
         }
 
         $this->view('auth/login');
@@ -23,32 +25,28 @@ class AuthController extends Controller {
             if (empty($username) || empty($password)) {
                 $_SESSION['error'] = "Username dan Password wajib diisi!";
                 
-                header('Location: /login');
-                exit;
+                redirect('/login');
             }
 
-            $userModel = new User();
-            $user = $userModel->findByUsername($username);
+            $user = $this->User->findByUsername($username);
 
             if ($user && password_verify($password, $user['password'])) {
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role'];
 
-                header('Location: /');
-                exit;
+                redirect('/');
             } else {
                 $_SESSION['error'] = "Username atau Password salah!";
 
-                header('Location: /login');
-                exit;
+                redirect('/login');
             }
         }
     }
 
     public function logout() {
         session_destroy();
-        header('Location: /login');
-        exit;
+
+        redirect('/login');
     }
 }
