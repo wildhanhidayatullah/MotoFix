@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use App\Config\Database;
+use App\Core\Model;
 
-class User {
-    private $connection;
+class User extends Model {
     private $table = 'users';
 
     public function __construct() {

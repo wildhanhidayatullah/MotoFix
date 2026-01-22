@@ -3,24 +3,19 @@
 namespace App\Models;
 
 use App\Config\Database;
+use App\Core\Model;
 use PDOException;
 
-class Customer {
-    private $connection;
+class Customer extends Model {
     private $tableC = 'customers';
     private $tableV = 'vehicles';
 
-    public function __construct() {
-        $database = new Database();
-        $this->connection = $database->getConnection();
-    }
-
     public function getAll() {
         $stmt = $this->connection->prepare(
-            "SELECT $this->tableC.*, GROUP_CONCAT(CONCAT($this->tableV.brand, ' ', $this->tableV.model) SEPARATOR ', ') as vehicles_list
-             FROM $this->tableC LEFT JOIN $this->tableV ON $this->tableC.id = $this->tableV.customer_id
-             GROUP BY $this->tableC.id
-             ORDER BY $this->tableC.created_at DESC"
+            "SELECT c.*, GROUP_CONCAT(CONCAT(v.brand, ' ', v.model) SEPARATOR ', ') as vehicles_list
+             FROM $this->tableC c LEFT JOIN $this->tableV v ON c.id = v.customer_id
+             GROUP BY c.id
+             ORDER BY c.created_at DESC"
         );
 
         $stmt->execute();
