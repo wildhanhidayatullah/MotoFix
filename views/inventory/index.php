@@ -1,11 +1,4 @@
-<?php
-
-use App\Helpers\FormatHelper;
-$format = new FormatHelper();
-
-require __DIR__ . '/../layouts/header.php';
-
-?>
+<?php require __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Inventaris Sparepart</h3>
@@ -27,16 +20,16 @@ require __DIR__ . '/../layouts/header.php';
             <tbody>
                 <?php foreach ($data['items'] as $item): ?>
                 <tr>
-                    <td class="align-middle"><?= $format->escapeChars($item['code']); ?></td>
-                    <td class="align-middle"><?= $format->escapeChars($item['name']); ?></td>
+                    <td class="align-middle"><?= escapeChars($item['code']); ?></td>
+                    <td class="align-middle"><?= escapeChars($item['name']); ?></td>
                     <td class="align-middle text-center fw-bold <?= $item['stock'] <= $item['min_stock_alert'] ? 'text-danger' : 'text-success'; ?>">
                         <?= $item['stock']; ?>
                     </td>
-                    <td class="align-middle text-center">Rp<?= $format->formatNumber($item['buy_price']); ?></td>
-                    <td class="align-middle text-center">Rp<?= $format->formatNumber($item['sell_price']); ?></td>
+                    <td class="align-middle text-center">Rp<?= formatNumber($item['buy_price']); ?></td>
+                    <td class="align-middle text-center">Rp<?= formatNumber($item['sell_price']); ?></td>
                     <td class="align-middle text-center">
-                        <a href="#" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="#" class="btn btn-sm btn-danger">Hapus</a>
+                        <a href="/inventory/edit?id=<?= $item['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                        <a href="/inventory/delete?id=<?= $item['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus layanan <?= $item['name']; ?>?')">Hapus</a>
                     </td>
                 </tr>
                 <?php endforeach; ?>

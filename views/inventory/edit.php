@@ -7,27 +7,29 @@
                 <h5 class="mb-0">Tambah Barang Baru</h5>
             </div>
             <div class="card-body">
-                <form action="/inventory/store" method="POST">
+                <form action="/inventory/update" method="POST">
+                    <?php csrfToken(); ?>
+                    <input type="hidden" name="id" value="<?= $data['item']['id']; ?>" />
                     <div class="mb-3">
                         <label>Kode Barang</label>
-                        <input required type="text" name="code" class="form-control" placeholder="Contoh: OLI-YAMALUBE-01">
+                        <input required type="text" name="code" value="<?= $data['item']['code']; ?>" class="form-control" placeholder="Contoh: OLI-YAMALUBE-01">
                     </div>
                     <div class="mb-3">
                         <label>Nama Barang</label>
-                        <input required type="text" name="name" class="form-control" placeholder="Contoh: Oli Yamalube Matic 800ml" />
+                        <input required type="text" name="name" value="<?= $data['item']['name']; ?>" class="form-control" placeholder="Contoh: Oli Yamalube Matic 800ml" />
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label>Stok</label>
-                            <input required type="number" name="stock" class="form-control" min="0" />
+                            <input required type="number" name="stock" value="<?= $data['item']['stock']; ?>" class="form-control" min="0" />
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>Harga Beli</label>
-                            <input required type="number" name="buy_price" class="form-control" />
+                            <input required type="number" name="buy_price" value="<?= (int)$data['item']['buy_price']; ?>" class="form-control" />
                         </div>
                         <div class="col-md-4 mb-3">
                             <label>Harga Jual</label>
-                            <input required type="number" name="sell_price" class="form-control" />
+                            <input required type="number" name="sell_price" value="<?= (int)$data['item']['sell_price']; ?>" class="form-control" />
                         </div>
                     </div>
                     
