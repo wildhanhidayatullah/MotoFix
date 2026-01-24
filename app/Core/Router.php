@@ -59,18 +59,11 @@ class Router {
 
             echo json_encode([
                 'status' => 'error',
-                'message' => '404 - Route Not Found',
+                'message' => '404 - Not Found',
                 'path' => $_SERVER['REQUEST_URI']
             ]);
         } else {
-            $url = htmlspecialchars($_SERVER['REQUEST_URI']);
-
-            echo "<div style='text-align:center; padding:50px; font-family:sans-serif;'>
-                    <h1>404 - Halaman Tidak Ditemukan</h1>
-                    <p>Maaf, path <code>$url</code> tidak ada di sistem.</p>
-                    <a href='/'>Kembali ke Dashboard</a>
-                  </div>";
+            require_once __DIR__ . "/../../views/errors/404.php";
         }
-        exit;
     }
 }
