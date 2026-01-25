@@ -4,19 +4,24 @@
     <div class="col-md-8">
         <div class="card shadow-sm">
             <div class="card-header bg-success text-white">
-                <h5 class="mb-0">Registrasi Pelanggan & Kendaraan</h5>
+                <?php if (isset($data['customer'])): ?>
+                    <h5 class="mb-0">Tambah Kendaraan Kendaraan</h5>
+                <?php else: ?>
+                    <h5 class="mb-0">Registrasi Pelanggan & Kendaraan</h5>
+                <?php endif; ?>
             </div>
             <div class="card-body">
                 <form action="/customers/store" method="POST">
                     <h6 class="text-muted mb-3">Informasi Pemilik</h6>
                     <div class="row mb-3">
+                        <input type="hidden" name="id" value="<?= $data['customer']['id'] ?? null; ?>" />
                         <div class="col-md-6">
                             <label>Nama Lengkap</label>
-                            <input type="text" name="name" class="form-control" required>
+                            <input type="text" name="name" value="<?= $data['customer']['name'] ?? null; ?>" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label>Nomor HP (WhatsApp)</label>
-                            <input type="text" name="phone" class="form-control" required placeholder="628...">
+                            <input type="text" name="phone" value="<?= $data['customer']['phone'] ?? null; ?>" class="form-control" required placeholder="628...">
                         </div>
                     </div>
                     <hr />

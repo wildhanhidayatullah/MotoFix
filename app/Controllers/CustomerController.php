@@ -15,9 +15,20 @@ class CustomerController extends Controller {
     }
 
     public function create() {
-        $this->view('customers/create', [
-            'title' => 'MotoFix | Registrasi Pelanggan Baru'
-        ]);
+        $id = $_GET['id'] ?? null;
+
+        if ($id) {
+            $customer = $this->Customer->findById($id);
+
+            $this->view('customers/create', [
+                'title' => 'MotoFix | Tambah Kendaraan Pelanggan',
+                'customer' => $customer
+            ]);
+        } else {
+            $this->view('customers/create', [
+                'title' => 'MotoFix | Registrasi Pelanggan Baru'
+            ]);
+        }
     }
 
     public function store() {
@@ -28,5 +39,18 @@ class CustomerController extends Controller {
                 echo "Gagal menyimpan data.";
             }
         }
+    }
+
+    public function detail() {
+        $id = $_GET['id'] ?? null;
+        
+        $customer = $this->Customer->findById($id);
+        $vehicles = $this->Vehicle->getByCustomerId($id);
+
+        $this->view('customers/detail', [
+            'title' => 'MotoFix | Informasi Pelanggan & Kendaraan',
+            'customer' => $customer,
+            'vehicles' => $vehicles
+        ]);
     }
 }

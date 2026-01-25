@@ -1,11 +1,4 @@
-<?php
-
-use App\Helpers\FormatHelper;
-$format = new FormatHelper();
-
-require __DIR__ . '/../layouts/header.php';
-
-?>
+<?php require __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Data Pelanggan</h3>
@@ -25,13 +18,22 @@ require __DIR__ . '/../layouts/header.php';
             <tbody>
                 <?php foreach ($data['customers'] as $customer): ?>
                     <tr>
-                        <td class="align-middle"><?= $format->escapeChars($customer['name']) ?></td>
-                        <td class="align-middle"><?= $format->escapeChars($customer['phone']) ?></td>
+                        <td class="align-middle"><?= escapeChars($customer['name']) ?></td>
+                        <td class="align-middle"><?= escapeChars($customer['phone']) ?></td>
                         <td class="align-middle text-center fw-bold">
-                            <?= htmlspecialchars($customer['vehicles_list'] ?? '-'); ?>
+                            <?php 
+                                if (!$customer['vehicles_list']) {
+                                    echo '-';
+                                } else {
+                                    foreach (explode(',', $customer['vehicles_list']) as $vehicle) {
+                                        echo escapeChars($vehicle) . '<br />';
+                                    }
+                                }
+                            ?>
                         </td>
                         <td class="align-middle text-center">
-                            <a href="#" class="btn btn-sm btn-info">Detail</a>
+                            <a href="/customers/create?id=<?= $customer['id']; ?>" class="btn btn-sm btn-warning"><i class="fas fa-plus"></i> Kendaraan</a>
+                            <a href="/customers/detail?id=<?= $customer['id']; ?>" class="btn btn-sm btn-info">Detail</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

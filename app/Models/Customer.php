@@ -23,19 +23,33 @@ class Customer extends Model {
         return $stmt->fetchAll();
     }
 
+    public function findById($id) {
+        $stmt = $this->connection->prepare("SELECT * FROM $this->tableC WHERE id = :id");
+
+        $stmt->execute([
+            ':id' => $id
+        ]);
+
+        return $stmt->fetch();
+    }
+
     public function create($data) {
         $this->connection->beginTransaction();
 
         try {
-            $stmtCustomer = $this->connection->prepare("INSERT INTO $this->tableC (name, phone) VALUES (:name, :phone)");
+            if (!empty($data['id'])) {
+                $customerId = $data['id'];
+            } else {
+                $stmtCustomer = $this->connection->prepare("INSERT INTO $this->tableC (name, phone) VALUES (:name, :phone)");
             
-            $stmtCustomer->execute([
-                ':name' => $data['name'],
-                ':phone' => $data['phone']
-            ]);
+                $stmtCustomer->execute([
+                    ':name' => $data['name'],
+                    ':phone' => $data['phone']
+                ]);
 
-            $customerId = $this->connection->lastInsertId();
-
+                $customerId = $this->connection->lastInsertId();
+            }
+            
             $stmtVehicle = $this->connection->prepare(
                 "INSERT INTO $this->tableV (customer_id, brand, model, color, production_year)
                  VALUES (:cid, :brand, :model, :color, :year)"
