@@ -20,6 +20,7 @@
                     <li class="nav-item"><a class="nav-link" href="/inventory">Inventaris</a></li>
                     <li class="nav-item"><a class="nav-link" href="/services">Layanan</a></li>
                     <li class="nav-item"><a class="nav-link" href="/mechanics">Mekanik</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/users">Pengguna</a></li>
                     <li class="nav-item"><a class="nav-link" href="/customers">Pelanggan</a></li>
                     <li class="nav-item"><a class="nav-link" href="/transactions">Transaksi</a></li>
                 </ul>
