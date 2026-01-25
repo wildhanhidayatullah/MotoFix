@@ -13,6 +13,7 @@ use App\Controllers\InventoryController;
 use App\Controllers\MechanicController;
 use App\Controllers\ServiceController;
 use App\Controllers\TransactionController;
+use App\Controllers\UserController;
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
@@ -56,6 +57,7 @@ $router->post('/mechanics/update', [MechanicController::class, 'update']);
 // Customers
 $router->get('/customers', [CustomerController::class, 'index']);
 $router->get('/customers/create', [CustomerController::class, 'create']);
+$router->get('/customers/detail', [CustomerController::class, 'detail']);
 $router->post('/customers/store', [CustomerController::class, 'store']);
 
 // Transactions
@@ -63,6 +65,14 @@ $router->get('/transactions', [TransactionController::class, 'index']);
 $router->get('/transactions/create', [TransactionController::class, 'create']);
 $router->get('/transactions/show', [TransactionController::class, 'show']);
 $router->post('/transactions/store', [TransactionController::class, 'store']);
+
+// Users
+$router->get('/users', [UserController::class, 'index']);
+$router->get('/users/create', [UserController::class, 'create']);
+$router->get('/users/edit', [UserController::class, 'edit']);
+$router->get('/users/changestatus', [UserController::class, 'changeStatus']);
+$router->post('/users/store', [UserController::class, 'store']);
+$router->post('/users/update', [UserController::class, 'update']);
 
 // APIs
 $router->get('/api/vehicles', [TransactionController::class, 'getVehicles']);
