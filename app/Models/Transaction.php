@@ -102,4 +102,34 @@ class Transaction extends Model {
             return false;
         }
     }
+
+    public function getStatsToday() {
+        $today = date('Y-m-d');
+        
+        $stmt = $this->connection->prepare(
+            "SELECT COUNT(id) as count, COALESCE(SUM(total_amount), 0) as total 
+             FROM transactions
+             WHERE DATE(transaction_date) = :today"
+        );
+
+        $stmt->execute([
+            ':today' => $today
+        ]);
+
+        return $stmt->fetch();
+    }
+
+    public function getStatsLastSevenDays() {  
+        $stmt = $this->connection->prepare(
+            "SELECT DATE(transaction_date) as t_date, SUM(total_amount) as total
+             FROM transactions
+             WHERE transaction_date >= DATE(NOW()) - INTERVAL 7 DAY
+             GROUP BY DATE(transaction_date)
+             ORDER BY t_date ASC"
+        );
+
+        $stmt->execute();
+
+        return $stmt->fetchAll();
+    }
 }

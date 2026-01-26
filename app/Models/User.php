@@ -102,6 +102,5 @@ class User extends Model {
             error_log("ERROR: Failed to commit changes ($this->table): " . $error->getMessage());
             return false;
         }
-        
     }
 }

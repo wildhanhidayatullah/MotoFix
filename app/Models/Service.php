@@ -9,7 +9,7 @@ class Service extends Model {
     private $table = 'services';
 
     public function getAll() {
-        $stmt = $this->connection->prepare("SELECT * from $this->table ORDER BY name ASC");
+        $stmt = $this->connection->prepare("SELECT * from $this->table WHERE is_deleted = 0 ORDER BY name ASC");
         $stmt->execute();
 
         return $stmt->fetchAll();
@@ -42,7 +42,7 @@ class Service extends Model {
 
     public function update($id, $data) {
         try {
-            $stmt = $this->connection->prepare("UPDATE $this->table SET name = :name, price = :price WHERE id = :id");
+            $stmt = $this->connection->prepare("UPDATE $this->table SET name = :name, price = :price WHERE id = :id AND is_deleted = 0");
 
             $stmt->execute([
                 ':id' => $id,
@@ -59,7 +59,7 @@ class Service extends Model {
 
     public function delete($id) {
         try {
-            $stmt = $this->connection->prepare("DELETE FROM $this->table WHERE id = :id");
+            $stmt = $this->connection->prepare("UPDATE $this->table SET name = CONCAT('(DELETED)', name), is_deleted = 1 WHERE id = :id");
 
             $stmt->execute([
                 ':id' => $id
