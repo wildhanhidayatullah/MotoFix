@@ -43,11 +43,12 @@ function setFlash($message, $type) {
 }
 
 function flash() {
-    $message = $_SESSION['flash']['message'];
-    $type = $_SESSION['flash']['type'];
-
-    echo "<div class='alert alert-$type alert-dismissible fade show' role='alert'>
-            $message
-            <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
-            </div>";
+    if (isset($_SESSION['flash'])) {
+        echo "<div class='alert alert-{$_SESSION['flash']['type']} alert-dismissible fade show' role='alert'>
+                {$_SESSION['flash']['message']}
+                <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+              </div>";
+    
+        unset($_SESSION['flash']);
+    }
 }
