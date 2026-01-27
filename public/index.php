@@ -28,7 +28,6 @@ $router->post('/login-process', [AuthController::class, 'login']);
 
 // Dashboard
 $router->get('/', [DashboardController::class, 'index']);
-$router->get('/about', [DashboardController::class, 'about']);
 
 // Invetory
 $router->get('/inventory', [InventoryController::class, 'index']);

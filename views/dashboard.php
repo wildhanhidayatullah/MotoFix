@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/header.php'; ?>
+<?php require __DIR__ . '/layouts/header.php'; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -8,8 +8,8 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Omzet Hari Ini</div>
-                        <div class="h3 mb-0 font-weight-bold text-gray-800">
+                        <div class="text-xs fw-bold text-primary text-uppercase mb-1">Omzet Hari Ini</div>
+                        <div class="h3 mb-0 fw-bold text-gray-800">
                             Rp<?= formatNumber($data['omzet_today']); ?>
                         </div>
                     </div>
@@ -25,8 +25,8 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Transaksi Hari Ini</div>
-                        <div class="h3 mb-0 font-weight-bold text-gray-800">
+                        <div class="text-xs fw-bold text-success text-uppercase mb-1">Transaksi Hari Ini</div>
+                        <div class="h3 mb-0 fw-bold text-gray-800">
                             <?= $data['trx_count']; ?> <span class="text-muted text-sm" style="font-size:14px">Struk</span>
                         </div>
                     </div>
@@ -42,8 +42,8 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Stok Menipis</div>
-                        <div class="h3 mb-0 font-weight-bold text-gray-800">
+                        <div class="text-xs fw-bold text-danger text-uppercase mb-1">Stok Menipis</div>
+                        <div class="h3 mb-0 fw-bold text-gray-800">
                             <?= $data['low_stock_total']; ?> <span class="text-muted text-sm" style="font-size:14px">Item</span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
     <div class="col-md-8">
         <div class="card shadow mb-4">
             <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">Grafik Pendapatan (7 Hari Terakhir)</h6>
+                <h6 class="m-0 fw-bold text-primary">Grafik Pendapatan (7 Hari Terakhir)</h6>
             </div>
             <div class="card-body">
                 <canvas id="salesChart"></canvas>
@@ -69,7 +69,7 @@
     <div class="col-md-4">
         <div class="card shadow mb-4">
             <div class="card-header py-3 bg-danger text-white">
-                <h6 class="m-0 font-weight-bold">Perlu Re-Stock</h6>
+                <h6 class="m-0 fw-bold">Perlu Re-Stock</h6>
             </div>
             <div class="card-body p-0">
                 <table class="table table-sm table-striped mb-0">
@@ -138,4 +138,4 @@
     });
 </script>
 
-<?php require __DIR__ . '/../layouts/footer.php'; ?>
+<?php require __DIR__ . '/layouts/footer.php'; ?>

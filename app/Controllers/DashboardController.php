@@ -37,6 +37,6 @@ class DashboardController extends Controller {
             'chart_values' => json_encode($chartValues)
         ];
 
-        $this->view('dashboard/index', $data);
+        $this->view('dashboard', $data);
     }
 }
