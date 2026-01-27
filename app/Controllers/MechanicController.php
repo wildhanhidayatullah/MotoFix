@@ -24,12 +24,12 @@ class MechanicController extends Controller {
 
             if ($this->Mechanic->create($_POST)) {
                 setFlash('Berhasil menambahkan mekanik baru.', 'success');
-                redirect('/mechanics');
             } else {
                 setFlash('Gagal menambahkan mekanik baru.', 'danger');
-                exit;
             }
         }
+
+        redirect('/mechanics');
     }
 
     public function edit() {
@@ -37,6 +37,7 @@ class MechanicController extends Controller {
         $mechanic = $this->Mechanic->findById($id);
         
         if (!$mechanic) {
+            setFlash('Mekanik dengan ID yang dicari tidak ditemukan.', 'danger');
             redirect('/mechanics');
         }
 
@@ -52,11 +53,11 @@ class MechanicController extends Controller {
 
             if ($this->Mechanic->update($_POST['id'], $_POST)) {
                 setFlash('Berhasil memperbarui data mekanik.', 'success');
-                redirect('/mechanics');
             } else {
                 setFlash('Gagal memperbarui data mekanik.', 'danger');
-                exit;
             }
         }
+
+        redirect('/mechanics');
     }
 }

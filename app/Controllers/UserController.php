@@ -24,12 +24,12 @@ class UserController extends Controller {
 
             if ($this->User->create($_POST)) {
                 setFlash('Berhasil menambahkan pengguna baru.', 'success');
-                redirect('/users');
             } else {
                 setFlash('Gagal menambahkan pengguna baru.', 'danger');
-                exit;
             }
         }
+
+        redirect('/users');
     }
 
     public function edit() {
@@ -37,6 +37,7 @@ class UserController extends Controller {
         $user = $this->User->findById($id);
         
         if (!isset($user)) {
+            setFlash('Pengguna dengan ID yang dicari tidak ditemukan.', 'danger');
             redirect('/users');
         }
 
@@ -52,21 +53,9 @@ class UserController extends Controller {
 
             if ($this->User->update($_POST['id'], $_POST)) {
                 setFlash('Berhasil memperbarui data pengguna.', 'success');
-                redirect('/users');
             } else {
                 setFlash('Gagal memperbarui data pengguna.', 'danger');
-                exit;
             }
-        }
-    }
-
-    public function changeStatus() {
-        $id = $_GET['id'] ?? null;
-
-        if ($this->User->updateStatus($id)) {
-            setFlash('Berhasil mengubah status pengguna.', 'success');
-        } else {
-            setFlash('Gagal mengubah status pengguna.', 'danger');
         }
 
         redirect('/users');

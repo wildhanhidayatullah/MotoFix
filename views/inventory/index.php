@@ -11,9 +11,9 @@
                 <tr>
                     <th>Kode</th>
                     <th>Nama Barang</th>
-                    <th class="text-center">Stok</th>
-                    <th class="text-center">Harga Beli</th>
-                    <th class="text-center">Harga Jual</th>
+                    <th class="text-center" width="120">Stok</th>
+                    <th>Harga Beli</th>
+                    <th>Harga Jual</th>
                     <th class="text-center">Aksi</th>
                 </tr>
             </thead>
@@ -25,8 +25,8 @@
                     <td class="align-middle text-center fw-bold <?= $item['stock'] <= $item['min_stock_alert'] ? 'text-danger' : 'text-success'; ?>">
                         <?= $item['stock']; ?>
                     </td>
-                    <td class="align-middle text-center">Rp<?= formatNumber($item['buy_price']); ?></td>
-                    <td class="align-middle text-center">Rp<?= formatNumber($item['sell_price']); ?></td>
+                    <td class="align-middle">Rp<?= formatNumber($item['buy_price']); ?></td>
+                    <td class="align-middle">Rp<?= formatNumber($item['sell_price']); ?></td>
                     <td class="align-middle text-center">
                         <a href="/inventory/edit?id=<?= $item['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
                         <a href="/inventory/delete?id=<?= $item['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus layanan <?= $item['name']; ?>?')">Hapus</a>

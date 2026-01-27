@@ -6,11 +6,9 @@ use App\Core\Controller;
 
 class CustomerController extends Controller {
     public function index() {
-        $customers = $this->Customer->getAll();
-
         $this->view('customers/index', [
             'title' => 'MotoFix | Pelanggan',
-            'customers' => $customers
+            'customers' => $this->Customer->getAll()
         ]);
     }
 
@@ -33,24 +31,31 @@ class CustomerController extends Controller {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            csrfCheck();
+
             if ($this->Customer->create($_POST)) {
-                redirect('/customers');
+                setFlash('Berhasil menambahkan pelanggan baru.', 'success');
             } else {
-                echo "Gagal menyimpan data.";
+                setFlash('Gagal menambahkan pelanggan baru.', 'danger');
             }
         }
+
+        redirect('/customers');
     }
 
     public function detail() {
         $id = $_GET['id'] ?? null;
-        
         $customer = $this->Customer->findById($id);
-        $vehicles = $this->Vehicle->getByCustomerId($id);
+
+        if (!isset($customer)) {
+            setFlash('Pelanggan dengan ID yang dicari tidak ditemukan.', 'danger');
+            redirect('/customers');
+        }
 
         $this->view('customers/detail', [
             'title' => 'MotoFix | Informasi Pelanggan & Kendaraan',
             'customer' => $customer,
-            'vehicles' => $vehicles
+            'vehicles' => $this->Vehicle->getByCustomerId($id)
         ]);
     }
 }

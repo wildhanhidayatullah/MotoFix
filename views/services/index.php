@@ -10,7 +10,7 @@
             <thead class="table-dark">
                 <tr>
                     <th>Nama Layanan</th>
-                    <th class="text-center">Harga</th>
+                    <th>Harga</th>
                     <th class="text-center" width="150">Aksi</th>
                 </tr>
             </thead>
@@ -18,7 +18,7 @@
                 <?php foreach ($data['services'] as $service): ?>
                 <tr>
                     <td class="align-middle"><?= escapeChars($service['name']); ?></td>
-                    <td class="align-middle text-center">Rp<?= formatNumber($service['price'], 0, ',', '.'); ?></td>
+                    <td class="align-middle">Rp<?= formatNumber($service['price'], 0, ',', '.'); ?></td>
                     <td class="align-middle text-center">
                         <a href="/services/edit?id=<?= $service['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
                         <a href="/services/delete?id=<?= $service['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus layanan <?= $service['name']; ?>?')">Hapus</a>

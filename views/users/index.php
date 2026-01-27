@@ -11,6 +11,7 @@
                 <tr>
                     <th>Nama Pengguna</th>
                     <th class="text-center">Role</th>
+                    <th class="text-center">Status</th>
                     <th class="text-center">Created At</th>
                     <th class="text-center" width="250">Aksi</th>
                 </tr>
@@ -20,10 +21,16 @@
                     <tr>
                         <td class="align-middle"><?= escapeChars($user['username']); ?></td>
                         <td class="align-middle text-center"><?= ucfirst(escapeChars($user['role'])); ?></td>
+                        <td class="align-middle text-center">
+                            <?php if ($user['is_active']): ?>
+                                <span class="fw-bold text-success">Aktif</span>
+                            <?php else: ?>
+                                <span class="fw-bold text-danger">Non-Aktif</span>
+                            <?php endif; ?>
+                        </td>
                         <td class="align-middle text-center"><?php date_default_timezone_set('Asia/Jakarta'); echo date('d M Y', strtotime($user['created_at'])); ?></td>
                         <td class="align-middle text-center">
                             <a href="/users/edit?id=<?= $user['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="/users/changestatus?id=<?= $user['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Nonaktifkan pengguna dengan nama <?= $user['username']; ?>?')">Nonaktifkan</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

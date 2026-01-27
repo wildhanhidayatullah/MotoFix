@@ -42,6 +42,7 @@
         <?php endif; ?>
         
         <form action="/login-process" method="POST">
+            <?php csrfToken(); ?>
             <label for="username">Username</label>
             <input required type="text" id="username" name="username" placeholder="Masukkan username" />
 

@@ -6,11 +6,9 @@ use App\Core\Controller;
 
 class InventoryController extends Controller {
     public function index() {
-        $items = $this->Item->getAll();
-
         $this->view('inventory/index', [
             'title' => 'MotoFix | Inventaris',
-            'items' => $items
+            'items' => $this->Item->getAll()
         ]);
     }
 
@@ -22,13 +20,16 @@ class InventoryController extends Controller {
 
     public function store() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            csrfCheck();
+
             if ($this->Item->create($_POST)) {
-                redirect('/inventory');
+                setFlash('Berhasil menambahkan barang baru.', 'success');
             } else {
-                echo "Gagal menyimpan data.";
-                exit;
+                setFlash('Gagal menambahkan barang baru.', 'danger');
             }
         }
+
+        redirect('/inventory');
     }
 
     public function edit() {
@@ -36,6 +37,7 @@ class InventoryController extends Controller {
         $item = $this->Item->findById($id);
         
         if (!$item) {
+            setFlash('Barang dengan ID yang dicari tidak ditemukan.', 'danger');
             redirect('/inventory');
         }
 
@@ -50,13 +52,13 @@ class InventoryController extends Controller {
             csrfCheck();
 
             if ($this->Item->update($_POST['id'], $_POST)) {
-                setFlash('Berhasil memperbarui barang.', 'success');
-                redirect('/inventory');
+                setFlash('Berhasil memperbarui data barang.', 'success');
             } else {
-                setFlash('Gagal memperbarui barang.', 'danger');
-                exit;
+                setFlash('Gagal memperbarui data barang.', 'danger');
             }
         }
+
+        redirect('/inventory');
     }
 
     public function delete() {

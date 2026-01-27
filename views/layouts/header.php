@@ -32,3 +32,4 @@
         </div>
     </nav>
     <div class="container">
+        <?php flash(); ?>

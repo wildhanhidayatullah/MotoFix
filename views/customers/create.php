@@ -3,7 +3,7 @@
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card shadow-sm">
-            <div class="card-header bg-success text-white">
+            <div class="card-header bg-primary text-white">
                 <?php if (isset($data['customer'])): ?>
                     <h5 class="mb-0">Tambah Kendaraan Kendaraan</h5>
                 <?php else: ?>
@@ -12,6 +12,7 @@
             </div>
             <div class="card-body">
                 <form action="/customers/store" method="POST">
+                    <?php csrfToken(); ?>
                     <h6 class="text-muted mb-3">Informasi Pemilik</h6>
                     <div class="row mb-3">
                         <input type="hidden" name="id" value="<?= $data['customer']['id'] ?? null; ?>" />

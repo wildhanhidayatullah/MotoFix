@@ -24,12 +24,12 @@ class ServiceController extends Controller {
 
             if ($this->Service->create($_POST)) {
                 setFlash('Berhasil menambahkan layanan baru.', 'success');
-                redirect('/services');
             } else {
                 setFlash('Gagal menambahkan layanan baru.', 'danger');
-                exit;
             }
         }
+
+        redirect('/services');
     }
 
     public function edit() {
@@ -37,6 +37,7 @@ class ServiceController extends Controller {
         $service = $this->Service->findById($id);
         
         if (!$service) {
+            setFlash('Layanan dengan ID yang dicari tidak ditemukan.', 'danger');
             redirect('/services');
         }
 
@@ -52,12 +53,12 @@ class ServiceController extends Controller {
 
             if ($this->Service->update($_POST['id'], $_POST)) {
                 setFlash('Berhasil memperbarui layanan.', 'success');
-                redirect('/services');
             } else {
                 setFlash('Gagal memperbarui layanan.', 'danger');
-                exit;
             }
         }
+
+        redirect('/services');
     }
 
     public function delete() {

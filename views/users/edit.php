@@ -25,6 +25,17 @@
                         <span class="text-danger" style="font-size: 15px">Kosongkan jika tidak ingin mengganti password</span>
                         <input type="text" name="password" class="form-control" />
                     </div>
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <select required name="is_active" type="number" class="form-control">
+                            <option value="<?= ($data['user']['is_active']) ? 1 : 0; ?>">
+                                <?= ($data['user']['is_active']) ? 'Aktif' : 'Non-Aktif'; ?>
+                            </option>
+                            <option value="<?= ($data['user']['is_active']) ? 0 : 1; ?>">
+                                <?= ($data['user']['is_active']) ? 'Non-Aktif' : 'Aktif'; ?>
+                            </option>
+                        </select>
+                    </div>
                     <div class="d-flex justify-content-end">
                         <a href="/users" class="btn btn-secondary me-2">Batal</a>
                         <button type="submit" class="btn btn-success">Simpan</button>

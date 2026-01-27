@@ -19,6 +19,8 @@ class AuthController extends Controller {
 
     public function login() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            csrfCheck();
+
             $username = $_POST['username'] ?? '';
             $password = $_POST['password'] ?? '';
 

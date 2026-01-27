@@ -1,6 +1,7 @@
 <?php require __DIR__ . '/../layouts/header.php'; ?>
 
 <script>
+    const CSRF_TOKEN = "<?= $_SESSION['csrf_token'] ?? '' ?>";
     const ITEMS_DATA = <?= $data['items_json']; ?>;
     const SERVICES_DATA = <?= $data['services_json']; ?>;
     const MECHANICS_DATA = <?= $data['mechanics_json']; ?>;
@@ -32,9 +33,9 @@
 
     <div class="col-md-8">
         <div class="card shadow-sm">
-            <div class="card-header bg-success text-white d-flex justify-content-between">
+            <div class="card-header bg-primary text-white d-flex justify-content-between">
                 <span>2. Item Transaksi</span>
-                <button type="button" class="btn btn-sm btn-light" onclick="addItemRow()">+ Tambah Item</button>
+                <button type="button" class="btn btn-sm btn-light py-0" onclick="addItemRow()"><i class="fas fa-add"></i> Item</button>
             </div>
             <div class="card-body p-0">
                 <table class="table table-striped mb-0" id="cartTable">
@@ -52,13 +53,13 @@
                     <tfoot class="table-dark">
                         <tr>
                             <td colspan="3" class="text-end"><strong>Total Bayar:</strong></td>
-                            <td colspan="2"><strong id="grandTotal">Rp 0</strong></td>
+                            <td colspan="2"><strong id="grandTotal">Rp0</strong></td>
                         </tr>
                     </tfoot>
                 </table>
             </div>
             <div class="card-footer text-end">
-                <button type="button" class="btn btn-lg btn-primary" onclick="processCheckout()">
+                <button type="button" class="btn btn-md btn-success" onclick="processCheckout()">
                     <i class="fas fa-save"></i> SIMPAN & BAYAR
                 </button>
             </div>
@@ -120,7 +121,7 @@
                 <td>
                     <input type="number" class="form-control qty-input" value="1" min="1" onchange="calculateTotal()">
                 </td>
-                <td class="price-display">Rp 0</td>
+                <td class="price-display">Rp0</td>
                 <td>
                     <button class="btn btn-danger btn-sm" onclick="removeRow(${rowId})">X</button>
                 </td>
@@ -154,7 +155,7 @@
             const qty = parseInt(row.querySelector('.qty-input').value || 1);
             total += (price * qty);
         });
-        document.getElementById('grandTotal').innerText = 'Rp ' + total.toLocaleString();
+        document.getElementById('grandTotal').innerText = 'Rp' + total.toLocaleString();
         return total;
     }
 
@@ -197,6 +198,7 @@
         }
 
         const payload = {
+            csrf_token: CSRF_TOKEN,
             customer_id: customerId,
             vehicle_id: vehicleId,
             grand_total: calculateTotal(),
@@ -210,6 +212,7 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
                 });
+                
                 const result = await res.json();
                 
                 if (result.status === 'success') {

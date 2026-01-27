@@ -3,14 +3,13 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use Exception;
 
 class TransactionController extends Controller {
     public function index() {
-        $transactions = $this->Transaction->getAll();
-
         $this->view('transactions/index', [
             'title' => 'MotoFix | Transaksi',
-            'transactions' => $transactions
+            'transactions' => $this->Transaction->getAll()
         ]);
     }
 
@@ -18,21 +17,21 @@ class TransactionController extends Controller {
         $invoice = $_GET['inv'] ?? null;
 
         if (!$invoice) {
+            setFlash('Invoice yang dicari tidak ditemukan.', 'danger');
             redirect('/transactions');
         }
 
         $header = $this->Transaction->getByInvoice($invoice);
-        $items = $this->Item->getByInvoice($invoice);
 
         if (!$header) {
-            echo "Transaksi tidak ditemukan.";
-            exit;
+            setFlash('Transaksi dengan invoice yang dicari tidak ditemukan.', 'danger');
+            redirect('/transactions');
         }
 
         $this->view('transactions/show', [
             'title' => 'Invoice ' . $invoice,
             'header' => $header,
-            'items' => $items
+            'items' => $items = $this->Item->getByInvoice($invoice)
         ]);
     }
 
@@ -47,28 +46,49 @@ class TransactionController extends Controller {
     }
 
     public function store() {
-        $input = json_decode(file_get_contents('php://input'), true);
-
-        if (!$input) {
-            http_response_code(400);
-            echo json_encode(['status' => 'error', 'message' => 'Invalid Data']);
-            return;
-        }
-
-        $input['user_id'] = $_SESSION['user_id'];
-
-        $invoice = $this->Transaction->create($input);
-
+        ini_set('display_errors', 0);
         header('Content-Type: application/json');
 
-        if ($invoice) {
-            echo json_encode(['status' => 'success', 'invoice' => $invoice]);
-            exit;
-        } else {
+        try {
+            $input = json_decode(file_get_contents('php://input'), true);
+
+            if (!$input) {
+                http_response_code(400);
+                echo json_encode(['status' => 'error', 'message' => 'Invalid Data or Empty Payload']);
+                exit;
+            }
+
+            if (!isset($input['csrf_token']) || $input['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+                http_response_code(403);
+                echo json_encode([
+                    'status' => 'error', 
+                    'message' => 'Security Warning: CSRF Token Mismatch. Silakan refresh halaman.'
+                ]);
+                exit;
+            }
+
+            unset($input['csrf_token']);
+
+            $input['user_id'] = $_SESSION['user_id'];
+
+            $invoice = $this->Transaction->create($input);
+
+            if ($invoice) {
+                echo json_encode(['status' => 'success', 'invoice' => $invoice]);
+            } else {
+                throw new Exception("Gagal menyimpan transaksi.");
+            }
+
+            } catch (Exception $error) {
+
             http_response_code(500);
-            echo json_encode(['status' => 'error', 'message' => 'Gagal menyimpan transaksi']);
-            exit;
+            echo json_encode([
+                'status' => 'error', 
+                'message' => $error->getMessage()
+            ]);
         }
+
+        exit;
     }
 
     public function getVehicles() {

@@ -8,6 +8,7 @@
             </div>
             <div class="card-body">
                 <form action="/inventory/store" method="POST">
+                    <?php csrfToken(); ?>
                     <div class="mb-3">
                         <label>Kode Barang</label>
                         <input required type="text" name="code" class="form-control" placeholder="Contoh: OLI-YAMALUBE-01">
