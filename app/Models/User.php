@@ -9,7 +9,7 @@ class User extends Model {
     private $table = 'users';
 
     public function getAll() {
-        $stmt = $this->connection->prepare("SELECT id, username, role, created_at FROM $this->table ORDER BY username ASC");
+        $stmt = $this->connection->prepare("SELECT id, username, role, is_active, created_at FROM $this->table ORDER BY username ASC");
 
         $stmt->execute();
 
@@ -77,28 +77,25 @@ class User extends Model {
         try {
             $stmt = $this->connection->prepare($query);
             $stmt->execute($params);
+
+            $stmtStatus = $this->connection->prepare("SELECT is_active FROM $this->table WHERE id = :id");
+            $stmtStatus->execute([':id' => $id]);
+            $status = $stmtStatus->fetch();
+
+            if ($data['is_active'] !== $status['is_active']) {
+                if ($id == $_SESSION['user_id']) {
+                    
+                } else {
+                    $stmt = $this->connection->prepare("UPDATE $this->table SET is_active = :active WHERE id = :id");
+                    $stmt->execute([
+                        ':id' => $id,
+                        ':active' => $data['is_active']
+                    ]);
+                }
+            }
     
             return true;
         } catch (PDOException $error) {
-            error_log("ERROR: Failed to commit changes ($this->table): " . $error->getMessage());
-            return false;
-        }
-    }
-
-    public function updateStatus($id) {
-        if ($id === $_SESSION['user_id']) {
-            return false;
-        }
-
-        try {
-            $stmt = $this->connection->prepare("UPDATE $this->table SET is_active = 1 - is_active WHERE id = :id");            
-            
-            $stmt->execute([
-                ':id' => $id
-            ]);
-    
-            return true;
-        } catch (PEDOException $error) {
             error_log("ERROR: Failed to commit changes ($this->table): " . $error->getMessage());
             return false;
         }
