@@ -25,22 +25,25 @@ class AuthController extends Controller {
             $password = $_POST['password'] ?? '';
 
             if (empty($username) || empty($password)) {
-                $_SESSION['error'] = "Username dan Password wajib diisi!";
-                
+                setFlash('Username dan Password wajib diisi.', 'danger');
                 redirect('/login');
             }
 
             $user = $this->User->findByUsername($username);
 
             if ($user && password_verify($password, $user['password'])) {
+                if ($user['is_active'] == 0) {
+                    setFlash('Akun Anda telah dinonaktifkan.<br />Hubungi Admin.', 'danger');
+                    redirect('/login');
+                }
+
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['role'] = $user['role'];
 
                 redirect('/');
             } else {
-                $_SESSION['error'] = "Username atau Password salah!";
-
+                setFlash('Username atau Password salah.', 'danger');
                 redirect('/login');
             }
         }

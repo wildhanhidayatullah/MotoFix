@@ -9,9 +9,18 @@ function csrfToken() {
 }
 
 function csrfCheck() {
-    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        die('CSRF Token Mismatch: Akses ditolak.');
+    if (session_status() === PHP_SESSION_NONE) session_start();
+    
+    $token = $_POST['csrf_token'] ?? '';
+
+    if (!isset($_SESSION['csrf_token'])) {
+        die('Error: Session CSRF Token tidak ditemukan. Silakan refresh halaman.');
     }
+
+    if (!hash_equals($_SESSION['csrf_token'], $token)) {
+        http_response_code(403);
+        die('Security Error: CSRF Token tidak valid (Mismatch).');
+    }    
 }
 
 function dd($data) {
@@ -44,7 +53,7 @@ function setFlash($message, $type) {
 
 function flash() {
     if (isset($_SESSION['flash'])) {
-        echo "<div class='alert alert-{$_SESSION['flash']['type']} alert-dismissible fade show' role='alert'>
+        echo "<div class='alert alert-{$_SESSION['flash']['type']} alert-dismissible fade show fs-12' role='alert'>
                 {$_SESSION['flash']['message']}
                 <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
               </div>";

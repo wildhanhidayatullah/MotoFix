@@ -57,8 +57,8 @@ class TransactionController extends Controller {
                 echo json_encode(['status' => 'error', 'message' => 'Invalid Data or Empty Payload']);
                 exit;
             }
-
-            if (!isset($input['csrf_token']) || $input['csrf_token'] !== ($_SESSION['csrf_token'] ?? '')) {
+            
+            if (!isset($input['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $input['csrf_token'])) {
                 http_response_code(403);
                 echo json_encode([
                     'status' => 'error', 
