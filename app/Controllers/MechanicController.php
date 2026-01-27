@@ -59,16 +59,4 @@ class MechanicController extends Controller {
             }
         }
     }
-
-    public function delete() {
-        $id = $_GET['id'] ?? null;
-
-        if ($this->Mechanic->delete($id)) {
-            setFlash('Berhasil menghapus data mekanik.', 'success');
-        } else {
-            setFlash('Gagal menghapus data mekanik.', 'danger');
-        }
-
-        redirect('/mechanics');
-    }
 }

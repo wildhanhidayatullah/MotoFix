@@ -49,7 +49,6 @@ $router->post('/services/update', [ServiceController::class, 'update']);
 $router->get('/mechanics', [MechanicController::class, 'index']);
 $router->get('/mechanics/create', [MechanicController::class, 'create']);
 $router->get('/mechanics/edit', [MechanicController::class, 'edit']);
-$router->get('/mechanics/delete', [MechanicController::class, 'delete']);
 $router->post('/mechanics/store', [MechanicController::class, 'store']);
 $router->post('/mechanics/update', [MechanicController::class, 'update']);
 
@@ -69,7 +68,6 @@ $router->post('/transactions/store', [TransactionController::class, 'store']);
 $router->get('/users', [UserController::class, 'index']);
 $router->get('/users/create', [UserController::class, 'create']);
 $router->get('/users/edit', [UserController::class, 'edit']);
-$router->get('/users/changestatus', [UserController::class, 'changeStatus']);
 $router->post('/users/store', [UserController::class, 'store']);
 $router->post('/users/update', [UserController::class, 'update']);
 

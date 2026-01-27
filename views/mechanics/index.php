@@ -1,7 +1,7 @@
 <?php require __DIR__ . '/../layouts/header.php'; ?>
 
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h3>Data Mekanik</h3>
+    <h3>Mekanik</h3>
     <a href="/mechanics/create" class="btn btn-primary"><i class="fas fa-user-plus"></i> Mekanik Baru</a>
 </div>
 <div class="card shadow-sm">
@@ -33,7 +33,6 @@
                         </td>
                         <td class="align-middle text-center">
                             <a href="/mechanics/edit?id=<?= $mechanic['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="/mechanics/delete?id=<?= $mechanic['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus mekanik dengan nama <?= $mechanic['name']; ?>?')">Hapus</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

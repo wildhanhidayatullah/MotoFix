@@ -71,19 +71,4 @@ class Mechanic extends Model {
             return false;
         }
     }
-
-    public function updateStatus($id) {
-        try {
-            $stmt = $this->connection->prepare("UPDATE $this->table SET is_active = 1 - is_active WHERE id = :id");            
-            
-            $stmt->execute([
-                ':id' => $id
-            ]);
-    
-            return true;
-        } catch (PEDOException $error) {
-            error_log("ERROR: Failed to commit changes ($this->table): " . $error->getMessage());
-            return false;
-        }
-    }
 }
