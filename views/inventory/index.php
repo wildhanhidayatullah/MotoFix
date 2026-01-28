@@ -2,7 +2,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Inventaris Sparepart</h3>
-    <a href="/inventory/create" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Barang</a>
+    <?php if (isAdmin() || isOwner()): ?>
+        <a href="/inventory/create" class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Barang</a>
+    <?php endif; ?>
 </div>
 <div class="card shadow-sm">
     <div class="card-body">
@@ -14,7 +16,9 @@
                     <th class="text-center" width="120">Stok</th>
                     <th>Harga Beli</th>
                     <th>Harga Jual</th>
-                    <th class="text-center">Aksi</th>
+                    <?php if (isAdmin() || isOwner()): ?>
+                        <th class="text-center">Aksi</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -27,10 +31,12 @@
                     </td>
                     <td class="align-middle">Rp<?= formatNumber($item['buy_price']); ?></td>
                     <td class="align-middle">Rp<?= formatNumber($item['sell_price']); ?></td>
-                    <td class="align-middle text-center">
-                        <a href="/inventory/edit?id=<?= $item['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="/inventory/delete?id=<?= $item['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus layanan <?= $item['name']; ?>?')">Hapus</a>
-                    </td>
+                    <?php if (isAdmin() || isOwner()): ?>
+                        <td class="align-middle text-center">
+                            <a href="/inventory/edit?id=<?= $item['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                            <a href="/inventory/delete?id=<?= $item['id']; ?>" class="btn btn-sm btn-danger" onclick="return confirm('Hapus layanan <?= $item['name']; ?>?')">Hapus</a>
+                        </td>
+                    <?php endif; ?>
                 </tr>
                 <?php endforeach; ?>
                 

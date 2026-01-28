@@ -29,47 +29,59 @@ $router->post('/login-process', [AuthController::class, 'login']);
 // Dashboard
 $router->get('/', [DashboardController::class, 'index']);
 
-// Invetory
+// Inventory
 $router->get('/inventory', [InventoryController::class, 'index']);
-$router->get('/inventory/create', [InventoryController::class, 'create']);
-$router->get('/inventory/edit', [InventoryController::class, 'edit']);
-$router->get('/inventory/delete', [InventoryController::class, 'delete']);
-$router->post('/inventory/store', [InventoryController::class, 'store']);
-$router->post('/inventory/update', [InventoryController::class, 'update']);
+if (isAdmin() || isOwner()) {
+    $router->get('/inventory/create', [InventoryController::class, 'create']);
+    $router->get('/inventory/edit', [InventoryController::class, 'edit']);
+    $router->get('/inventory/delete', [InventoryController::class, 'delete']);
+    $router->post('/inventory/store', [InventoryController::class, 'store']);
+    $router->post('/inventory/update', [InventoryController::class, 'update']);
+}
 
 // Services
 $router->get('/services', [ServiceController::class, 'index']);
-$router->get('/services/create', [ServiceController::class, 'create']);
-$router->get('/services/edit', [ServiceController::class, 'edit']);
-$router->get('/services/delete', [ServiceController::class, 'delete']);
-$router->post('/services/store', [ServiceController::class, 'store']);
-$router->post('/services/update', [ServiceController::class, 'update']);
+if (isAdmin() || isOwner()) {
+    $router->get('/services/create', [ServiceController::class, 'create']);
+    $router->get('/services/edit', [ServiceController::class, 'edit']);
+    $router->get('/services/delete', [ServiceController::class, 'delete']);
+    $router->post('/services/store', [ServiceController::class, 'store']);
+    $router->post('/services/update', [ServiceController::class, 'update']);
+}
 
 // Mechanics
 $router->get('/mechanics', [MechanicController::class, 'index']);
-$router->get('/mechanics/create', [MechanicController::class, 'create']);
-$router->get('/mechanics/edit', [MechanicController::class, 'edit']);
-$router->post('/mechanics/store', [MechanicController::class, 'store']);
-$router->post('/mechanics/update', [MechanicController::class, 'update']);
+if (isAdmin() || isOwner()) {
+    $router->get('/mechanics/create', [MechanicController::class, 'create']);
+    $router->get('/mechanics/edit', [MechanicController::class, 'edit']);
+    $router->post('/mechanics/store', [MechanicController::class, 'store']);
+    $router->post('/mechanics/update', [MechanicController::class, 'update']);
+}
 
 // Customers
 $router->get('/customers', [CustomerController::class, 'index']);
-$router->get('/customers/create', [CustomerController::class, 'create']);
 $router->get('/customers/detail', [CustomerController::class, 'detail']);
-$router->post('/customers/store', [CustomerController::class, 'store']);
+if (isCashier() || isOwner()) {
+    $router->get('/customers/create', [CustomerController::class, 'create']);
+    $router->post('/customers/store', [CustomerController::class, 'store']);
+}
 
 // Transactions
 $router->get('/transactions', [TransactionController::class, 'index']);
-$router->get('/transactions/create', [TransactionController::class, 'create']);
 $router->get('/transactions/show', [TransactionController::class, 'show']);
-$router->post('/transactions/store', [TransactionController::class, 'store']);
+if (isCashier() || isOwner()) {
+    $router->get('/transactions/create', [TransactionController::class, 'create']);
+    $router->post('/transactions/store', [TransactionController::class, 'store']);
+}
 
 // Users
-$router->get('/users', [UserController::class, 'index']);
-$router->get('/users/create', [UserController::class, 'create']);
-$router->get('/users/edit', [UserController::class, 'edit']);
-$router->post('/users/store', [UserController::class, 'store']);
-$router->post('/users/update', [UserController::class, 'update']);
+if (isAdmin() || isOwner()) {
+    $router->get('/users', [UserController::class, 'index']);
+    $router->get('/users/create', [UserController::class, 'create']);
+    $router->get('/users/edit', [UserController::class, 'edit']);
+    $router->post('/users/store', [UserController::class, 'store']);
+    $router->post('/users/update', [UserController::class, 'update']);
+}
 
 // APIs
 $router->get('/api/vehicles', [TransactionController::class, 'getVehicles']);

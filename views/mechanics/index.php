@@ -2,7 +2,9 @@
 
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3>Mekanik</h3>
-    <a href="/mechanics/create" class="btn btn-primary"><i class="fas fa-user-plus"></i> Mekanik Baru</a>
+    <?php if (isAdmin() || isOwner()): ?>
+        <a href="/mechanics/create" class="btn btn-primary"><i class="fas fa-user-plus"></i> Mekanik Baru</a>
+    <?php endif; ?>
 </div>
 <div class="card shadow-sm">
     <div class="card-body">
@@ -14,7 +16,9 @@
                     <th>Gaji Pokok</th>
                     <th class="text-center">Komisi</th>
                     <th class="text-center">Status</th>
-                    <th class="text-center">Aksi</th>
+                    <?php if (isAdmin() || isOwner()): ?>
+                        <th class="text-center">Aksi</th>
+                    <?php endif; ?>
                 </tr>
             </thead>
             <tbody>
@@ -31,11 +35,19 @@
                                 <span class="fw-bold text-danger">Non-Aktif</span>
                             <?php endif; ?>
                         </td>
-                        <td class="align-middle text-center">
-                            <a href="/mechanics/edit?id=<?= $mechanic['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
-                        </td>
+                        <?php if (isAdmin() || isOwner()): ?>
+                            <td class="align-middle text-center">
+                                <a href="/mechanics/edit?id=<?= $mechanic['id']; ?>" class="btn btn-sm btn-warning">Edit</a>
+                            </td>
+                        <?php endif; ?>
                     </tr>
                 <?php endforeach; ?>
+
+                <?php if (empty($data['mechanics'])): ?>
+                <tr>
+                    <td colspan="6" class="text-center text-muted">Belum ada data mekanik.</td>
+                </tr>
+                <?php endif; ?>
             </tbody>
         </table>
     </div>

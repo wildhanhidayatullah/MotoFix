@@ -35,7 +35,7 @@
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white d-flex justify-content-between">
                 <span>2. Item Transaksi</span>
-                <button type="button" class="btn btn-sm btn-light py-0" onclick="addItemRow()"><i class="fas fa-add"></i> Item</button>
+                <button type="button" class="btn btn-sm btn-light py-0" onclick="addItemRow()"><i class="fas fa-add"></i> Tambah Item</button>
             </div>
             <div class="card-body p-0">
                 <table class="table table-striped mb-0" id="cartTable">

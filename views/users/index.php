@@ -13,7 +13,7 @@
                     <th class="text-center">Role</th>
                     <th class="text-center">Status</th>
                     <th class="text-center">Created At</th>
-                    <th class="text-center" width="250">Aksi</th>
+                    <th class="text-center" width="150">Aksi</th>
                 </tr>
             </thead>
             <tbody>

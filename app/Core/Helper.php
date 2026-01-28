@@ -39,6 +39,30 @@ function formatNumber(int $value) {
     return number_format($value, 0, ',', '.');
 }
 
+function isAdmin() {
+    if (isset($_SESSION['user_id'])) {
+        return $_SESSION['role'] === 'admin';
+    }
+
+    return false;
+}
+
+function isCashier() {
+    if (isset($_SESSION['user_id'])) {
+        return $_SESSION['role'] === 'cashier';
+    }
+
+    return false;
+}
+
+function isOwner() {
+    if (isset($_SESSION['user_id'])) {
+        return $_SESSION['role'] === 'owner';
+    }
+
+    return false;
+}
+
 function redirect($path) {
     header('Location: ' . $path);
     exit;
