@@ -1,0 +1,48 @@
+name: Feature request
+description: Propose a feature or improvement for MotoFix
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What problem are you trying to solve?
+      placeholder: Describe the operational problem, not only the proposed UI.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: scope
+    attributes:
+      label: Suggested scope
+      options:
+        - Pilot
+        - v1.0.0
+        - Post-v1.0.0
+        - Not sure
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Screenshots, workflow examples, or constraints.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues and backlog items.
+          required: true
+        - label: This request does not contain secrets or customer data.
+          required: true

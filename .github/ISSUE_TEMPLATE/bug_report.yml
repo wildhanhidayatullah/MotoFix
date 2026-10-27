@@ -1,0 +1,105 @@
+name: Bug report
+description: Report a reproducible defect in MotoFix
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Do not report security vulnerabilities here. Use the private channel
+        described in SECURITY.md.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What is wrong?
+      placeholder: A clear and concise description of the defect.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Provide the smallest reliable reproduction.
+      placeholder: |
+        1. Sign in as ...
+        2. Open ...
+        3. Click ...
+        4. Observe ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: MotoFix version or commit
+      placeholder: Pilot tag, commit SHA, or "main"
+    validations:
+      required: true
+  - type: dropdown
+    id: environment
+    attributes:
+      label: Environment
+      options:
+        - Local development
+        - Staging
+        - Production
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: data
+    attributes:
+      label: Data impact
+      description: Did the defect change, lose, or corrupt any data?
+      options:
+        - No data changed
+        - Data changed or could be corrupted
+        - Unknown
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and operating system
+      placeholder: Chrome 000 on Windows 11
+  - type: input
+    id: device
+    attributes:
+      label: Device and viewport
+      description: Required for mobile issues, including Android version and screen size.
+      placeholder: Pixel 7, Android 16, 412x915
+  - type: input
+    id: hardware
+    attributes:
+      label: Hardware
+      description: Printer, scanner, or other device if relevant.
+      placeholder: 80 mm thermal printer, HID scanner
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs or support bundle
+      description: Paste relevant redacted logs. Never include secrets or customer data.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I searched existing issues.
+          required: true
+        - label: This is not a security vulnerability.
+          required: true
+        - label: I removed secrets and personal data from logs.
+          required: true
